@@ -16,7 +16,7 @@ case "$(uname -s)" in
   Darwin*) suffix="-apple-darwin";;
   FreeBSD*) suffix="-unknown-freebsd";;
   MINGW*|MSYS*|CYGWIN*)
-    echo "You are on Windows. Please visit sshx.io to download the executable.";
+    echo "You are on Windows. Please visit sshx.io to download the executable."
     exit 1;;
   *) echo "Unsupported OS $(uname -s)"; exit 1;;
 esac
@@ -26,7 +26,7 @@ case "$(uname -m)" in
   x86_64 | x64 | amd64) arch="x86_64";;
   armv6l) arch="arm"; suffix="${suffix}eabihf";;
   armv7l) arch="armv7"; suffix="${suffix}eabihf";;
-  *) echo "Unsupported arch $(uname -m)"; exit 1;;
+  *) echo "Unsupported architecture $(uname -m)"; exit 1;;
 esac
 
 url="https://s3.amazonaws.com/sshx/sshx-${arch}${suffix}.tar.gz"
@@ -50,7 +50,7 @@ case $cmd in
     path=$(pwd)
     ;;
   "install")
-    path=/usr/local/bin
+    path="/usr/local/bin"
     ;;
   *)
     printf "${ansi_error}Error: Invalid command. Please use 'run', 'download', or 'install'.\n"
@@ -59,7 +59,7 @@ case $cmd in
 esac
 
 printf "${ansi_reset}${ansi_info}↯ Downloading sshx from ${ansi_underline}%s${ansi_reset}\n" "$url"
-http_code=$(curl "$url" -o "$temp" -w "%{http_code}")
+http_code=$(curl -L "$url" -o "$temp" -w "%{http_code}")
 if [ "$http_code" -lt 200 ] || [ "$http_code" -gt 299 ]; then
   printf "${ansi_error}Error: Request had status code ${http_code}.\n"
   cat "$temp" 1>&2
@@ -80,3 +80,4 @@ if [ -n "$will_run" ]; then
   "$path/sshx"
   rm -f "$path/sshx"
 fi
+
